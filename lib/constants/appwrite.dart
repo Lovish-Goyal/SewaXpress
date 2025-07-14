@@ -1,0 +1,1 @@
+const String APPWRITE_PROJECT_ID = "68749b57002c1e8cc832";
