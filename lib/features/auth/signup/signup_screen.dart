@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../auth_provider.dart';
+import '../providers/auth_provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -238,7 +238,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 _nameController.text.trim(),
                                               );
                                               if (context.mounted) {
-                                                context.go('/home');
+                                                context.go('/');
                                               }
                                             } on AppwriteException catch (e) {
                                               ScaffoldMessenger.of(

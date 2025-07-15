@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sewaxpress/features/auth/providers/auth_provider.dart';
+import 'package:sewaxpress/features/services/models/service_model.dart';
+import 'package:sewaxpress/widgets/custom_gridview.dart';
+import '../services/widgets/service_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +17,7 @@ class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final PageController _pageController = PageController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
 
   final List<Service> featuredServices = [
@@ -89,6 +96,30 @@ class HomeScreenState extends State<HomeScreen>
       Colors.green[700]!,
       'Garden maintenance & landscaping',
     ),
+    Service(
+      'पेस्ट कंट्रोल\nPest Control',
+      Icons.bug_report,
+      Colors.grey[700]!,
+      'Safe pest control solutions',
+    ),
+    Service(
+      'मसाज\nMassage',
+      Icons.spa,
+      Colors.pink[600]!,
+      'Professional massage therapy',
+    ),
+    Service(
+      'बाल काटना\nHair Cut',
+      Icons.content_cut,
+      Colors.indigo[600]!,
+      'Home salon services',
+    ),
+    Service(
+      'योग\nYoga',
+      Icons.self_improvement,
+      Colors.teal[600]!,
+      'Personal yoga instructor',
+    ),
   ];
 
   final List<ServiceProvider> topProviders = [
@@ -150,6 +181,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -202,31 +234,66 @@ class HomeScreenState extends State<HomeScreen>
                             ),
                           ],
                         ),
-                        Stack(
+                        Row(
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Icon(
-                                Icons.notifications_outlined,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ),
-                            Positioned(
-                              right: 8,
-                              top: 8,
-                              child: Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
+                            Stack(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Icon(
+                                    Icons.notifications_outlined,
+                                    color: Colors.white,
+                                    size: 28,
+                                  ),
                                 ),
-                              ),
+                                Positioned(
+                                  right: 8,
+                                  top: 8,
+                                  child: Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                            Consumer(
+                              builder: (context, ref, child) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () async {
+                                      final user = await ref.read(
+                                        userProvider.future,
+                                      );
+
+                                      if (user == null && context.mounted) {
+                                        context.push('/login');
+                                        return;
+                                      }
+
+                                      if (context.mounted) {
+                                        await context.push('/profile');
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -463,25 +530,9 @@ class HomeScreenState extends State<HomeScreen>
 
                         SizedBox(height: 20),
 
-                        // Services Grid
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 1.0,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
-                                ),
-                            itemCount: allServices.length,
-                            itemBuilder: (context, index) {
-                              final service = allServices[index];
-                              return ServiceCard(service: service);
-                            },
-                          ),
+                        CustomGridView(
+                          list: allServices,
+                          itemBuilder: (item) => ServiceCard(service: item),
                         ),
 
                         SizedBox(height: 40),
@@ -542,176 +593,10 @@ class HomeScreenState extends State<HomeScreen>
   }
 }
 
-class ServiceCard extends StatelessWidget {
-  final Service service;
-
-  const ServiceCard({super.key, required this.service});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () {
-            _showServiceDetails(context, service);
-          },
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: service.color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(service.icon, size: 40, color: service.color),
-                ),
-                SizedBox(height: 15),
-                Text(
-                  service.name,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  service.description,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showServiceDetails(BuildContext context, Service service) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.8,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-        ),
-        child: Column(
-          children: [
-            // Handle
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-
-            // Header
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: service.color.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Icon(service.icon, size: 40, color: service.color),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          service.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          service.description,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Available Providers',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    // Provider list would go here
-                    Container(
-                      height: 100,
-                      child: Center(
-                        child: Text(
-                          'Loading providers...',
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class ProviderCard extends StatelessWidget {
   final ServiceProvider provider;
 
-  const ProviderCard({Key? key, required this.provider}) : super(key: key);
+  const ProviderCard({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context) {
@@ -1047,15 +932,6 @@ class ProviderCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class Service {
-  final String name;
-  final IconData icon;
-  final Color color;
-  final String description;
-
-  Service(this.name, this.icon, this.color, this.description);
 }
 
 class ServiceProvider {

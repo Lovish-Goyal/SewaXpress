@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../auth_provider.dart';
+import '../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -274,8 +274,11 @@ class _LoginScreenState extends State<LoginScreen>
                                                         _passwordController.text
                                                             .trim(),
                                                       );
+                                                      ref.invalidate(
+                                                        userProvider,
+                                                      );
                                                       if (context.mounted) {
-                                                        context.go('/home');
+                                                        context.go('/');
                                                       }
                                                     } on AppwriteException catch (
                                                       e

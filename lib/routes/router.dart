@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:sewaxpress/bottombar.dart';
-import 'package:sewaxpress/features/auth/auth_provider.dart';
+import 'package:sewaxpress/features/auth/providers/auth_provider.dart';
 import 'package:sewaxpress/features/auth/signup/signup_screen.dart';
 import 'package:sewaxpress/features/profile/profile_screen.dart';
 import 'package:sewaxpress/widgets/splash_screen.dart';
@@ -22,27 +22,26 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/splash',
     refreshListenable: routerNotifier,
 
-    redirect: (context, state) {
-      final userAsync = ref.read(userProvider);
-      final isSplash = state.uri.toString() == '/splash';
-      final isLogin =
-          state.uri.toString() == '/login' || state.uri.toString() == '/signup';
+    // redirect: (context, state) {
+    //   final userAsync = ref.read(userProvider);
+    //   final isSplash = state.uri.toString() == '/splash';
+    //   final isLogin =
+    //       state.uri.toString() == '/login' || state.uri.toString() == '/signup';
 
-      return userAsync.when(
-        data: (user) {
-          if (isSplash) return null;
+    //   return userAsync.when(
+    //     data: (user) {
+    //       if (isSplash) return null;
 
-          if (user == null && !isLogin) return '/login';
+    //       if (user == null && !isLogin) return '/login';
 
-          if (user != null && isLogin) return '/home';
+    //       if (user != null && isLogin) return '/home';
 
-          return null;
-        },
-        loading: () => null,
-        error: (_, __) => '/login',
-      );
-    },
-
+    //       return null;
+    //     },
+    //     loading: () => null,
+    //     error: (_, __) => null,
+    //   );
+    // },
     routes: [
       GoRoute(
         path: '/splash',
@@ -57,6 +56,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
       GoRoute(
         path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/provider-login',
         builder: (context, state) => const ProfileScreen(),
       ),
     ],

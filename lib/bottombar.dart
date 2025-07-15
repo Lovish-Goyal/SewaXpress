@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sewaxpress/features/booking/booking_screen.dart';
 import 'package:sewaxpress/features/home/home_screen.dart';
 import 'package:sewaxpress/features/profile/profile_screen.dart';
+import 'package:sewaxpress/features/services/services_screen.dart';
+
+import 'features/more_options/options_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({super.key});
@@ -14,9 +18,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
   static const List<Widget> _pages = <Widget>[
     HomeScreen(),
-    Center(child: Text('Search Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Booking Page', style: TextStyle(fontSize: 24))),
-    ProfileScreen(),
+    ServicesScreen(),
+    BookingScreen(),
+    OptionsScreen(),
   ];
 
   void _onItemTapped(int index) {
