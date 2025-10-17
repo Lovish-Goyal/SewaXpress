@@ -4,12 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:sewaxpress/bottombar.dart';
+import 'package:sewaxpress/features/about_us/about_us.dart';
 import 'package:sewaxpress/features/auth/providers/auth_provider.dart';
 import 'package:sewaxpress/features/auth/signup/signup_screen.dart';
+import 'package:sewaxpress/features/contact_us/contact_us.dart';
+import 'package:sewaxpress/features/notifications/notifications_screen.dart';
+import 'package:sewaxpress/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:sewaxpress/features/profile/profile_screen.dart';
+import 'package:sewaxpress/features/terms_and_conditions/terms_and_conditions.dart';
 import 'package:sewaxpress/widgets/splash_screen.dart';
 import '../features/auth/login/login_screen.dart';
-import '../features/home/home_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // listen userProvider to refresh router when user changes
@@ -53,13 +57,36 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/signup',
         builder: (context, state) => const SignupScreen(),
       ),
-      GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
       GoRoute(
         path: '/profile',
         builder: (context, state) => const ProfileScreen(),
       ),
       GoRoute(
-        path: '/provider-login',
+        path: '/about',
+        builder: (context, state) => const AboutUsScreen(),
+      ),
+      GoRoute(
+        path: '/contact',
+        builder: (context, state) => const ContactUsScreen(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/termsandconditions',
+        builder: (context, state) => const TermsAndConditionsScreen(),
+      ),
+      GoRoute(
+        path: '/privacyPolicy',
+        builder: (context, state) => const PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: '/providerLogin',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/providerProfile',
         builder: (context, state) => const ProfileScreen(),
       ),
     ],

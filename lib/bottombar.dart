@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sewaxpress/features/booking/booking_screen.dart';
 import 'package:sewaxpress/features/home/home_screen.dart';
-import 'package:sewaxpress/features/profile/profile_screen.dart';
 import 'package:sewaxpress/features/services/services_screen.dart';
 
 import 'features/more_options/options_screen.dart';
@@ -42,9 +41,12 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.miscellaneous_services),
+            label: 'Services',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Booking'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
         ],
       ),
     );

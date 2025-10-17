@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sewaxpress/features/services/models/service_model.dart';
 import 'package:sewaxpress/features/services/widgets/service_card.dart';
-import 'package:sewaxpress/widgets/custom_gridview.dart';
 
 class ServicesScreen extends StatefulWidget {
   const ServicesScreen({super.key});
 
   @override
-  _ServicesScreenState createState() => _ServicesScreenState();
+  ServicesScreenState createState() => ServicesScreenState();
 }
 
-class _ServicesScreenState extends State<ServicesScreen> {
+class ServicesScreenState extends State<ServicesScreen> {
   final List<String> categories = [
     'सभी',
     'घरेलू',
@@ -184,69 +183,27 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Category Tabs
-                      SizedBox(
-                        height: 60,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          itemCount: categories.length,
-                          itemBuilder: (context, index) {
-                            final category = categories[index];
-                            final isSelected = selectedCategory == category;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedCategory = category;
-                                });
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(right: 15),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Color(0xFF1976D2)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? Color(0xFF1976D2)
-                                        : Colors.grey[300]!,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.05),
-                                      blurRadius: 5,
-                                      offset: Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    category,
-                                    style: TextStyle(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.grey[700],
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-
-                      SizedBox(height: 20),
-
                       Expanded(
-                        child: CustomGridView(
-                          list: allServices,
-                          itemBuilder: (item) => ServiceCard(service: item),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: allServices.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.8,
+                                    mainAxisSpacing: 20,
+                                    crossAxisSpacing: 20,
+                                  ),
+                              itemBuilder: (context, index) {
+                                final item = allServices[index];
+                                return ServiceCard(service: item);
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ],

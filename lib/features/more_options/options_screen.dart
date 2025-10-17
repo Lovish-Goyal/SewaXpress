@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sewaxpress/features/auth/providers/auth_provider.dart';
 
 class OptionsScreen extends ConsumerStatefulWidget {
@@ -79,36 +80,7 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
 
                           SizedBox(height: isTablet ? 30 : 20),
 
-                          // Categories
                           _buildCategorySection(
-                            'मुख्य सेवाएं / Main Services',
-                            _getMainServices(),
-                            crossAxisCount,
-                            isTablet,
-                          ),
-
-                          SizedBox(height: isTablet ? 30 : 20),
-
-                          _buildCategorySection(
-                            'खाता प्रबंधन / Account Management',
-                            _getAccountOptions(),
-                            crossAxisCount,
-                            isTablet,
-                          ),
-
-                          SizedBox(height: isTablet ? 30 : 20),
-
-                          _buildCategorySection(
-                            'सेटिंग्स / Settings',
-                            _getSettingsOptions(),
-                            crossAxisCount,
-                            isTablet,
-                          ),
-
-                          SizedBox(height: isTablet ? 30 : 20),
-
-                          _buildCategorySection(
-                            'सहायता और समर्थन / Help & Support',
                             _getHelpOptions(),
                             crossAxisCount,
                             isTablet,
@@ -117,7 +89,6 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
                           SizedBox(height: isTablet ? 30 : 20),
 
                           _buildCategorySection(
-                            'ऐप जानकारी / App Info',
                             _getAppInfoOptions(),
                             crossAxisCount,
                             isTablet,
@@ -174,7 +145,6 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
   }
 
   Widget _buildCategorySection(
-    String title,
     List<OptionItem> options,
     int crossAxisCount,
     bool isTablet,
@@ -182,15 +152,6 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: isTablet ? 22 : 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        SizedBox(height: isTablet ? 20 : 15),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -277,173 +238,14 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
     );
   }
 
-  List<OptionItem> _getMainServices() {
-    return [
-      OptionItem(
-        title: 'नई बुकिंग\nNew Booking',
-        icon: Icons.add_circle_outline,
-        color: const Color(0xFF1976D2),
-        onTap: () {
-          // Navigate to new booking
-        },
-      ),
-      OptionItem(
-        title: 'मेरी बुकिंग\nMy Bookings',
-        icon: Icons.calendar_today,
-        color: Colors.green,
-        onTap: () {
-          // Navigate to my bookings
-        },
-      ),
-      OptionItem(
-        title: 'सेवा खोजें\nFind Services',
-        icon: Icons.search,
-        color: Colors.orange,
-        onTap: () {
-          // Navigate to services
-        },
-      ),
-      OptionItem(
-        title: 'तत्काल बुकिंग\nQuick Booking',
-        icon: Icons.flash_on,
-        color: Colors.red,
-        onTap: () {
-          // Navigate to quick booking
-        },
-      ),
-      OptionItem(
-        title: 'पसंदीदा सेवाएं\nFavorites',
-        icon: Icons.favorite,
-        color: Colors.pink,
-        onTap: () {
-          // Navigate to favorites
-        },
-      ),
-      OptionItem(
-        title: 'नियमित बुकिंग\nRegular Booking',
-        icon: Icons.repeat,
-        color: Colors.purple,
-        onTap: () {
-          // Navigate to regular bookings
-        },
-      ),
-    ];
-  }
-
-  List<OptionItem> _getAccountOptions() {
-    return [
-      OptionItem(
-        title: 'प्रोफाइल\nProfile',
-        icon: Icons.person,
-        color: const Color(0xFF1976D2),
-        onTap: () {
-          Navigator.pop(context); // Go back to profile
-        },
-      ),
-      OptionItem(
-        title: 'बुकिंग इतिहास\nBooking History',
-        icon: Icons.history,
-        color: Colors.brown,
-        onTap: () {
-          // Navigate to booking history
-        },
-      ),
-      OptionItem(
-        title: 'पेमेंट तरीके\nPayment Methods',
-        icon: Icons.payment,
-        color: Colors.green,
-        onTap: () {
-          // Navigate to payment methods
-        },
-      ),
-      OptionItem(
-        title: 'वॉलेट\nWallet',
-        icon: Icons.account_balance_wallet,
-        color: Colors.teal,
-        onTap: () {
-          // Navigate to wallet
-        },
-      ),
-      OptionItem(
-        title: 'रेटिंग और समीक्षा\nRatings & Reviews',
-        icon: Icons.star,
-        color: Colors.amber,
-        onTap: () {
-          // Navigate to ratings
-        },
-      ),
-      OptionItem(
-        title: 'पता प्रबंधन\nAddress Management',
-        icon: Icons.location_on,
-        color: Colors.red,
-        onTap: () {
-          // Navigate to address management
-        },
-      ),
-    ];
-  }
-
-  List<OptionItem> _getSettingsOptions() {
-    return [
-      OptionItem(
-        title: 'अधिसूचना\nNotifications',
-        icon: Icons.notifications,
-        color: Colors.blue,
-        onTap: () {
-          // Navigate to notifications
-        },
-      ),
-      OptionItem(
-        title: 'भाषा\nLanguage',
-        icon: Icons.language,
-        color: Colors.indigo,
-        onTap: () {
-          // Navigate to language settings
-        },
-      ),
-      OptionItem(
-        title: 'थीम\nTheme',
-        icon: Icons.palette,
-        color: Colors.purple,
-        onTap: () {
-          // Navigate to theme settings
-        },
-      ),
-      OptionItem(
-        title: 'डार्क मोड\nDark Mode',
-        icon: Icons.dark_mode,
-        color: Colors.grey,
-        onTap: () {
-          // Toggle dark mode
-        },
-      ),
-      OptionItem(
-        title: 'सुरक्षा\nSecurity',
-        icon: Icons.security,
-        color: Colors.red,
-        onTap: () {
-          // Navigate to security settings
-        },
-      ),
-      OptionItem(
-        title: 'गोपनीयता\nPrivacy',
-        icon: Icons.privacy_tip,
-        color: Colors.orange,
-        onTap: () {
-          // Navigate to privacy settings
-        },
-      ),
-    ];
-  }
-
   List<OptionItem> _getHelpOptions() {
     return [
       OptionItem(
-        title: 'सहायता केंद्र\nHelp Center',
-        icon: Icons.help_center,
+        title: 'सहायता केंद्र\nProfile',
+        icon: Icons.person,
         color: Colors.blue,
         onTap: () {
-          // Navigate to help center
+          context.push('/profile');
         },
       ),
       OptionItem(
@@ -496,7 +298,7 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
         icon: Icons.info,
         color: Colors.blue,
         onTap: () {
-          // Navigate to about app
+          context.push('/about');
         },
       ),
       OptionItem(

@@ -236,33 +236,38 @@ class HomeScreenState extends State<HomeScreen>
                         ),
                         Row(
                           children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Icon(
-                                    Icons.notifications_outlined,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 8,
-                                  top: 8,
-                                  child: Container(
-                                    width: 12,
-                                    height: 12,
+                            GestureDetector(
+                              onTap: () {
+                                context.push('/notifications');
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Icon(
+                                      Icons.notifications_outlined,
+                                      color: Colors.white,
+                                      size: 28,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Positioned(
+                                    right: 8,
+                                    top: 8,
+                                    child: Container(
+                                      width: 12,
+                                      height: 12,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(width: 10),
                             Consumer(
@@ -530,9 +535,26 @@ class HomeScreenState extends State<HomeScreen>
 
                         SizedBox(height: 20),
 
-                        CustomGridView(
-                          list: allServices,
-                          itemBuilder: (item) => ServiceCard(service: item),
+                        SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: featuredServices.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.8,
+                                    mainAxisSpacing: 20,
+                                    crossAxisSpacing: 20,
+                                  ),
+                              itemBuilder: (context, index) {
+                                final item = featuredServices[index];
+                                return ServiceCard(service: item);
+                              },
+                            ),
+                          ),
                         ),
 
                         SizedBox(height: 40),
