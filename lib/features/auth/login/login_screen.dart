@@ -12,381 +12,351 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false;
-  late AnimationController _animationController;
-  late Animation<double> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 800),
-      vsync: this,
-    );
-    _slideAnimation = Tween<double>(begin: 50.0, end: 0.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
-    );
-    _animationController.forward();
-  }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF1976D2), Color(0xFF42A5F5)],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(30.0),
-              child: AnimatedBuilder(
-                animation: _slideAnimation,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(0, _slideAnimation.value),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Logo Card
-                        Container(
-                          padding: EdgeInsets.all(40),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 20,
-                                offset: Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.home_repair_service,
-                                size: 80,
-                                color: Color(0xFF1976D2),
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                'Urban Services',
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                'आपके आसपास की सेवाएं',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+      backgroundColor: Colors.white,
+      body: Row(
+        children: [
+          // Left side - Brand section (visible on larger screens)
+          if (MediaQuery.of(context).size.width > 800)
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF0D47A1),
+                      Color(0xFF1976D2),
+                      Color(0xFF2196F3),
+                    ],
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.home_repair_service_rounded,
+                      size: 120,
+                      color: Colors.white,
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      'SewaXPress',
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF1976D2),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'आपके आसपास की सेवाएं',
+                      style: TextStyle(fontSize: 20, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
-                        SizedBox(height: 40),
-
-                        // Login Form Card
-                        Container(
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 15,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'स्वागत है / Welcome',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                SizedBox(height: 30),
-
-                                // Email Field
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[50],
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                      color: Colors.grey[200]!,
-                                    ),
-                                  ),
-                                  child: TextFormField(
-                                    controller: _emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    style: TextStyle(fontSize: 16),
-                                    decoration: InputDecoration(
-                                      labelText: 'ईमेल / Email',
-                                      labelStyle: TextStyle(fontSize: 16),
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: Color(0xFF1976D2),
-                                      ),
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20,
-                                        horizontal: 20,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'कृपया ईमेल डालें';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-
-                                SizedBox(height: 20),
-
-                                // Password Field
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[50],
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                      color: Colors.grey[200]!,
-                                    ),
-                                  ),
-                                  child: TextFormField(
-                                    controller: _passwordController,
-                                    obscureText: _obscurePassword,
-                                    style: TextStyle(fontSize: 16),
-                                    decoration: InputDecoration(
-                                      labelText: 'पासवर्ड / Password',
-                                      labelStyle: TextStyle(fontSize: 16),
-                                      prefixIcon: Icon(
-                                        Icons.lock_outline,
-                                        color: Color(0xFF1976D2),
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          _obscurePassword
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                          color: Colors.grey[600],
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _obscurePassword =
-                                                !_obscurePassword;
-                                          });
-                                        },
-                                      ),
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20,
-                                        horizontal: 20,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'कृपया पासवर्ड डालें';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-
-                                SizedBox(height: 30),
-
-                                // Login Button
-                                Consumer(
-                                  builder: (context, ref, child) {
-                                    return Container(
-                                      width: double.infinity,
-                                      height: 55,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color(0xFF1976D2),
-                                            Color(0xFF42A5F5),
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(
-                                              0xFF1976D2,
-                                            ).withOpacity(0.3),
-                                            blurRadius: 10,
-                                            offset: Offset(0, 5),
-                                          ),
+          // Right side - Login form
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: 450,
+                    padding: EdgeInsets.all(50),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Mobile logo
+                          if (MediaQuery.of(context).size.width <= 800)
+                            Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 30),
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFF1976D2),
+                                          Color(0xFF42A5F5),
                                         ],
                                       ),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          borderRadius: BorderRadius.circular(
-                                            15,
-                                          ),
-                                          onTap: _isLoading
-                                              ? null
-                                              : () async {
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    setState(
-                                                      () => _isLoading = true,
-                                                    );
-                                                    final authService = ref
-                                                        .read(
-                                                          authServiceProvider,
-                                                        );
-                                                    try {
-                                                      await authService.login(
-                                                        _emailController.text
-                                                            .trim(),
-                                                        _passwordController.text
-                                                            .trim(),
-                                                      );
-                                                      ref.invalidate(
-                                                        userProvider,
-                                                      );
-                                                      if (context.mounted) {
-                                                        context.go('/');
-                                                      }
-                                                    } on AppwriteException catch (
-                                                      e
-                                                    ) {
-                                                      ScaffoldMessenger.of(
-                                                        context,
-                                                      ).showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                            e.message ??
-                                                                'Login failed',
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } finally {
-                                                      setState(
-                                                        () =>
-                                                            _isLoading = false,
-                                                      );
-                                                    }
-                                                  }
-                                                },
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.home_repair_service_rounded,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
+                            ),
 
-                                          child: Center(
-                                            child: _isLoading
-                                                ? CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                          Color
-                                                        >(Colors.white),
-                                                  )
-                                                : Text(
-                                                    'लॉगिन करें / Login',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-
-                                SizedBox(height: 20),
-
-                                // Forgot Password
-                                TextButton(
-                                  onPressed: () {},
+                          Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
                                   child: Text(
-                                    'पासवर्ड भूल गए? / Forgot Password?',
+                                    'Welcome Back',
                                     style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w800,
                                       color: Color(0xFF1976D2),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Center(
+                                  child: Text(
+                                    'अपने खाते में लॉगिन करें',
+                                    style: TextStyle(
                                       fontSize: 16,
+                                      color: Colors.grey[600],
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
+                          SizedBox(height: 40),
 
-                        SizedBox(height: 30),
-
-                        // Sign Up Link
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(15),
+                          // Email
+                          TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              hintText: 'ईमेल दर्ज करें',
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Color(0xFF1976D2),
+                                  width: 2,
+                                ),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.email_outlined,
+                                color: Color(0xFF1976D2),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'ईमेल आवश्यक है';
+                              return null;
+                            },
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'नया यूजर हैं? ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[700],
+                          SizedBox(height: 20),
+
+                          // Password
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              hintText: 'पासवर्ड दर्ज करें',
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Color(0xFF1976D2),
+                                  width: 2,
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  context.push('/signup');
-                                },
-                                child: Text(
-                                  'खाता बनाएं / Sign Up',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xFF1976D2),
-                                    fontWeight: FontWeight.bold,
+                              prefixIcon: Icon(
+                                Icons.lock_outline,
+                                color: Color(0xFF1976D2),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () => setState(
+                                  () => _obscurePassword = !_obscurePassword,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'पासवर्ड आवश्यक है';
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 15),
+
+                          // Forgot password
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(color: Color(0xFF1976D2)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 30),
+
+                          // Login button
+                          Consumer(
+                            builder: (context, ref, child) {
+                              return SizedBox(
+                                width: double.infinity,
+                                height: 55,
+                                child: ElevatedButton(
+                                  onPressed: _isLoading
+                                      ? null
+                                      : () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            setState(() => _isLoading = true);
+                                            final authService = ref.read(
+                                              authServiceProvider,
+                                            );
+                                            try {
+                                              await authService.login(
+                                                _emailController.text.trim(),
+                                                _passwordController.text.trim(),
+                                              );
+                                              ref.invalidate(userProvider);
+                                              if (context.mounted)
+                                                context.go('/');
+                                            } on AppwriteException catch (e) {
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      e.message ??
+                                                          'Login failed',
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            } finally {
+                                              if (mounted)
+                                                setState(
+                                                  () => _isLoading = false,
+                                                );
+                                            }
+                                          }
+                                        },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF1976D2),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    elevation: 0,
                                   ),
+                                  child: _isLoading
+                                      ? SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : Text(
+                                          'Login',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 30),
+
+                          // Divider
+                          Row(
+                            children: [
+                              Expanded(child: Divider()),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Text(
+                                  'OR',
+                                  style: TextStyle(color: Colors.grey[600]),
                                 ),
                               ),
+                              Expanded(child: Divider()),
                             ],
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 30),
+
+                          // Sign up
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Don't have an account?",
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
+                                TextButton(
+                                  onPressed: () => context.go('/signup'),
+                                  child: Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      color: Color(0xFF1976D2),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -422,7 +422,7 @@ class AboutUsScreen extends ConsumerWidget {
 
   Widget _buildStatCard(String number, String label, bool isTablet) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 20 : 15),
+      padding: EdgeInsets.all(isTablet ? 20 : 10),
       decoration: BoxDecoration(
         color: const Color(0xFF1976D2).withOpacity(0.05),
         borderRadius: BorderRadius.circular(isTablet ? 15 : 12),
@@ -499,12 +499,18 @@ class AboutUsScreen extends ConsumerWidget {
                 size: isTablet ? 28 : 24,
               ),
               SizedBox(width: isTablet ? 12 : 10),
-              Text(
-                'हमारी विशेषताएं / Our Features',
-                style: TextStyle(
-                  fontSize: isTablet ? 22 : 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+              Flexible(
+                // or use Expanded
+                child: Text(
+                  'हमारी विशेषताएं / Our Features',
+                  style: TextStyle(
+                    fontSize: isTablet ? 22 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
                 ),
               ),
             ],
@@ -517,7 +523,7 @@ class AboutUsScreen extends ConsumerWidget {
               crossAxisCount: isTablet ? 2 : 1,
               crossAxisSpacing: isTablet ? 20 : 0,
               mainAxisSpacing: isTablet ? 20 : 15,
-              childAspectRatio: isTablet ? 3 : 5,
+              childAspectRatio: isTablet ? 3 : 4,
             ),
             itemCount: features.length,
             itemBuilder: (context, index) {
@@ -604,12 +610,18 @@ class AboutUsScreen extends ConsumerWidget {
                 size: isTablet ? 28 : 24,
               ),
               SizedBox(width: isTablet ? 12 : 10),
-              Text(
-                'ऐप की जानकारी / App Information',
-                style: TextStyle(
-                  fontSize: isTablet ? 22 : 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+              Flexible(
+                // or use Expanded
+                child: Text(
+                  'ऐप की जानकारी / App Information',
+                  style: TextStyle(
+                    fontSize: isTablet ? 22 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
                 ),
               ),
             ],

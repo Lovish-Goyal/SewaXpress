@@ -485,21 +485,22 @@ class ServiceProviderCard extends StatelessWidget {
                                   color: Colors.grey[600],
                                 ),
                               ),
-                              SizedBox(width: 16),
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.grey[600],
-                                size: 14,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                provider.distance,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
+
+                              // SizedBox(width: 16),
                             ],
+                          ),
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.grey[600],
+                            size: 14,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            provider.distance,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ],
                       ),

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sewaxpress/features/auth/providers/auth_provider.dart';
 import 'package:sewaxpress/features/services/models/service_model.dart';
-import 'package:sewaxpress/widgets/custom_gridview.dart';
 import '../services/widgets/service_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -545,7 +544,7 @@ class HomeScreenState extends State<HomeScreen>
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    childAspectRatio: 0.8,
+                                    childAspectRatio: 0.7,
                                     mainAxisSpacing: 20,
                                     crossAxisSpacing: 20,
                                   ),

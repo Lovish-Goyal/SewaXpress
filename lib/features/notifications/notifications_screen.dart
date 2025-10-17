@@ -205,12 +205,15 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         size: 30,
                       ),
                     ),
-                    Text(
-                      'सूचनाएं / Notifications',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: isTablet ? 32 : 24,
-                        fontWeight: FontWeight.bold,
+                    Flexible(
+                      child: Text(
+                        'सूचनाएं / Notifications',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isTablet ? 32 : 24,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     if (unreadCount > 0) ...[

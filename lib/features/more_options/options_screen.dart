@@ -241,7 +241,7 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
   List<OptionItem> _getHelpOptions() {
     return [
       OptionItem(
-        title: 'सहायता केंद्र\nProfile',
+        title: 'प्रोफ़ाइल\nProfile',
         icon: Icons.person,
         color: Colors.blue,
         onTap: () {
@@ -265,7 +265,7 @@ class _OptionsScreenState extends ConsumerState<OptionsScreen> {
         },
       ),
       OptionItem(
-        title: 'FAQ',
+        title: 'सामान्य प्रश्न\nFAQ',
         icon: Icons.quiz,
         color: Colors.purple,
         onTap: () {
